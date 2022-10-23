@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<style type="text/css">
+	#root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  background: red;
+}
+
+.card {
+  margin: 1rem;
+  border: 1px solid gray;
+  padding: 20px;
+}
+img{
+	height: 100px;
+	width: auto;
+}
+@media screen and (min-width: 600px) {
+  .card {
+    flex: 1 1 calc(50% - 2rem);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .card {
+    flex: 1 1 calc(33% - 2rem);
+  }
+}
+</style>
+<body>
+	<button type="submit" onclick="getData()">Search</button>
+</body>
+
+<script>
+function getData(){
+    fetch('https://us-central1-mars-incubation-lab.cloudfunctions.net/getUploads')
+    .then(function(response) {
+        // return response.json();
+        return res.text();
+    })
+    .then(function(myJson) {
+        console.log(myJson);
+    });
+}
+
+
+function UserAction() {
+	fetch('https://us-central1-mars-incubation-lab.cloudfunctions.net/getUploads', {
+	  method: 'GET', 
+	  mode: 'no-cors', 
+	  headers: {
+	    'Content-Type': 'application/json',
+	  },
+	  // body: JSON.stringify(data),
+	})
+	  .then((response) => console.log(JSON.stringify(response)))
+	  .then((data) => {
+	    console.log('Success:', data);
+	  })
+	  .catch((error) => {
+	    console.error('Error:', error);
+	  });
+}
+</script>
+
+</html>
