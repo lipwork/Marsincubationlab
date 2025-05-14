@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<style type="text/css">
+	#root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  background: red;
+}
+
+.card {
+  margin: 1rem;
+  border: 1px solid gray;
+  padding: 20px;
+  background: gray;
+  width: 20vw;
+}
+img{
+	height: 100px;
+	width: auto;
+}
+
+</style>
+<body>
+	<div id="root"></div>
+	<div class="container"></div>
+	<!-- <script src="scripts.js"></script> -->
+</body>
+
+<script type="text/javascript">
+	const app = document.getElementById('root');
+
+	// const logo = document.createElement('img');
+	// logo.src = 'logo.png';
+
+	// const image = document.getElementById('image')
+	const container = document.createElement('div');
+				container.setAttribute('class', 'container');
+  
+	// app.appendChild(logo);
+	app.appendChild(container);
+
+	var request = new XMLHttpRequest();
+	request.open('GET', 'https://ghibliapi.herokuapp.com/films', true);
+	request.onload = function () {
+
+	  // Begin accessing JSON data here
+	  var data = JSON.parse(this.response);
+	  if (request.status >= 200 && request.status < 400) {
+	    data.forEach(movie => {
+	      const card = document.createElement('div');
+	      card.setAttribute('class', 'card');
+
+	      const h1 = document.createElement('h1');
+	      h1.textContent = movie.title;
+
+	      const p = document.createElement('p');
+	      movie.description = movie.description.substring(0, 300);
+	      p.textContent = `${movie.description}...`;
+
+	      const h3 = document.createElement('h3');
+	      h3.textContent = movie.movie_banner;
+
+	      const img = document.createElement('img');
+	      img.src = h3.textContent;
+
+	      container.appendChild(card);
+	      card.appendChild(h1);
+	      card.appendChild(p);
+	      // card.appendChild(h3);
+	      card.appendChild(img);
+	    });
+	  } else {
+	    const errorMessage = document.createElement('marquee');
+	    errorMessage.textContent = `Gah, it's not working!`;
+	    app.appendChild(errorMessage);
+	  }
+	}
+
+	request.send();
+</script>
+</html>

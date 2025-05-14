@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<style type="text/css">
+*{
+	color: #fff;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body{
+		height: 100vh;
+		width: 100vw;
+	}
+#root {
+
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+	/* margin: 10px; */
+/* 	position: absolute; */
+  background-image: linear-gradient(to right, rgba(94, 62, 255, 1.0), rgba(33, 29, 28, 1), rgba(94, 62, 255, 1.0));
+	background-size: 200%;
+	animation: a_color_3 3s linear reverse infinite;
+  width: 50vw;
+  height: 5vw;
+  left: 50vw;
+  overflow: hidden;
+}
+/* .card:hover, */ .open_card{
+	animation: a_color_3 3s linear infinite;
+	height: 50vw;
+	transition-duration: 1s;
+}
+@keyframes a_color_3 {
+		0% {
+			background-position: 0% 0%;
+		}
+		50% {
+			background-position: 100% 0%;
+		}
+		100% {
+			background-position: 200% 0%;
+		}
+	}
+	.card h1{
+		position: absolute;
+		font-size: 1.9vw;
+		margin-top: 0vw;
+		margin-left: 0vw;
+		background: rgba(94, 62, 255, 1.0);
+		width: 5vw;
+		height: 5vw;
+		padding-top: 1vw;
+		text-align: center;
+		border-radius: 0 3vw 3vw 0;
+	}
+	.card p{
+		font-size: 1.2vw;
+		/* position: absolute; */
+		margin-left: 5vw;
+		margin-top: 3vw;
+	}
+	.card h2{
+		font-size: 0.8vw;
+		position: absolute;
+		margin-top: 0vw;
+		margin-left: 5vw;
+		padding: 1vw;
+		text-align: center;
+	}
+	.card h3{
+		font-size: 0.6vw;
+		position: absolute;
+		margin-left: 29vw;
+		margin-top: -3vw;
+	}
+video{
+		background-color: #000;
+		width: 45vw;
+		height: 24vw;
+		margin-left: 5vw;
+		margin-top: 5vw;
+	}
+	.center{
+
+	}
+</style>
+<body>
+	<div class="center">
+		<div id="root"></div>
+	</div>
+</body>
+
+<script type="text/javascript">
+// $( "#pipe08" ).hover(
+//   function() { 
+//   	$( "#popup2").removeClass( "popslow" );
+//   	$( "#popup2").addClass( "popfast" );
+// }, function() {
+// 	$( "#popup2").removeClass( "popfast" );
+// 	$( "#popup2").addClass( "popslow" );
+// });
+
+
+	const app = document.getElementById('root');
+
+	// const logo = document.createElement('img');
+	// logo.src = 'logo.png';
+
+	// const image = document.getElementById('image')
+	const container = document.createElement('div');
+				container.setAttribute('class', 'container');
+  
+	// app.appendChild(logo);
+	app.appendChild(container);
+
+	var request = new XMLHttpRequest();
+	request.open('GET', 'https://us-central1-mars-incubation-lab.cloudfunctions.net/getUploads', true);
+	request.onload = function () {
+
+	  // Begin accessing JSON data here
+	  var data = JSON.parse(this.response);
+	  if (request.status >= 200 && request.status < 400) {
+	    data.forEach(movie => {
+	      const card = document.createElement('div');
+	      card.setAttribute('class', 'card');
+
+	      const h1 = document.createElement('h1');
+	      h1.textContent = movie.id;
+
+	      const version = document.createElement('h2');
+	      version.textContent = movie.version;
+
+	      const h3 = document.createElement('h3');
+	      h3.textContent = movie.time;
+
+	      const h4 = document.createElement('h4');
+	      h4.textContent = movie.url;
+
+	      const p = document.createElement('p');
+	      p.textContent = movie.feedback;
+
+	      const img = document.createElement('video');
+	      img.src = h4.textContent;
+
+	      container.appendChild(card);
+	      card.appendChild(h1);
+	      card.appendChild(version);
+	      card.appendChild(h3);
+	      card.appendChild(img);
+	      card.appendChild(p);
+	      
+	      card.onclick = function(){open()};
+			  function open() {
+			  document.getElementsByClassName("card").classList.toggle("open_card");
+				};
+	      
+	    });
+	  } else {
+	    const errorMessage = document.createElement('marquee');
+	    errorMessage.textContent = `Gah, it's not working!`;
+	    app.appendChild(errorMessage);
+	  }
+	}
+
+	request.send();
+
+  
+	// $(".card").click(function(){
+	// 	$(this).toggleClass('open_card');
+ //  });
+</script>
+</html>
